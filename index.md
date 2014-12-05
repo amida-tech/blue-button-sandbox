@@ -4,7 +4,7 @@ layout: page
 
 # Sandbox
 
-This demo converts each section of a CCD document in XML to JSON:
+This demo converts each section of a CCD document in XML to JSON.
 
 ## Source Data
 
@@ -75,7 +75,7 @@ Use sample data and convert: <button onclick="load('bb_ref_ccda')">Sample CCDA</
 
 
 <a name="social_history-section"></a>
-## Smoking Status
+## Social History
 <pre><code id="social_history" class="javascript"></code></pre>
 
 
