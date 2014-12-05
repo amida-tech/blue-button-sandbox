@@ -89,7 +89,7 @@ Use sample data and convert: <button onclick="load('bb_ref_ccda')">Sample CCDA</
 <pre><code id="payers" class="javascript"></code></pre>
 
 
-<script src="/bower_components/blue-button-xml/dist/blue-button-xml.js"></script>
-<script src="/bower_components/blue-button-cms/dist/blue-button-cms.js"></script>
-<script src="/bower_components/blue-button-generate/dist/blue-button-generate.js"></script>
-<script src="/bower_components/blue-button/dist/blue-button.js"></script>
+<script src="bower_components/blue-button-xml/dist/blue-button-xml.js"></script>
+<script src="bower_components/blue-button-cms/dist/blue-button-cms.js"></script>
+<script src="bower_components/blue-button-generate/dist/blue-button-generate.js"></script>
+<script src="bower_components/blue-button/dist/blue-button.js"></script>
