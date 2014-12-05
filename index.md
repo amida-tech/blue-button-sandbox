@@ -4,7 +4,7 @@ layout: page
 
 # Sandbox
 
-This demo converts each section of a CCD document in XML to JSON.
+This demo converts each section of a CCD document in XML (CCDA or C32) or CMS document to JSON.
 
 ## Source Data
 
@@ -26,7 +26,7 @@ This demo converts each section of a CCD document in XML to JSON.
 
 Use sample data and convert: <button onclick="load('bb_ref_ccda')">Sample CCDA</button> | <button onclick="convert()">Convert</button> <button onclick="clearAll()">Clear</button>
 
-[Demographics](#demographics-section), [Allergies](#allergies-section), [Plan of Care](#careplan-section), [Encounters](#encounters-section), [Immunizations](#immunizations-section), [Medications](#medications-section), [Problems](#problems-section), [Procedures](#procedures-section), [Results (Labs)](#results-section), [Social History](#social_history-section), [Vitals](#vitals-section), [Payers](#payers-section)
+[Demographics](#demographics-section), [Allergies](#allergies-section), [Plan of Care](#careplan-section), [Encounters](#encounters-section), [Immunizations](#immunizations-section), [Medications](#medications-section), [Problems](#problems-section), [Procedures](#procedures-section), [Results (Labs)](#results-section), [Social History](#social_history-section), [Vitals](#vitals-section), [Payers](#payers-section), [Claims](#claims-section)
 
 
 <a name="demographics-section"></a>
@@ -87,6 +87,11 @@ Use sample data and convert: <button onclick="load('bb_ref_ccda')">Sample CCDA</
 <a name="payers-section"></a>
 ## Payers
 <pre><code id="payers" class="javascript"></code></pre>
+
+
+<a name="claims-section"></a>
+## Claims
+<pre><code id="claims" class="javascript"></code></pre>
 
 
 <script src="bower_components/blue-button-xml/dist/blue-button-xml.js"></script>

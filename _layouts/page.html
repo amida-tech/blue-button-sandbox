@@ -23,6 +23,7 @@ layout: main
   var socialHistory = document.getElementById('social_history');
   var vitals = document.getElementById('vitals');
   var payers = document.getElementById('payers');
+  var claims = document.getElementById('claims');
 
   function hl(src) {
     return JSON.stringify(src, undefined, 2);
@@ -70,9 +71,12 @@ layout: main
 
   function convert() {
     clearJSON();
-    var xml = document.getElementById('xml').value;
+    var content = document.getElementById('xml').value;
     var bb = require('blue-button');
-    var result = bb.parseString(xml);
+
+    var sensed = bb.senseString(content);
+    var cms = sensed.type === 'cms';
+    var result = cms ? bb.parseText(content) : bb.parseString(content);
     var data = result.data;
 
     demographics.innerHTML = hl(data.demographics);
@@ -87,6 +91,7 @@ layout: main
     socialHistory.innerHTML = hl(data.social_history);
     vitals.innerHTML = hl(data.vitals);
     payers.innerHTML = hl(data.payers);
+    claims.innerHTML = hl(data.claims);
   }
 
 </script>
