@@ -1,0 +1,93 @@
+---
+layout: main
+---
+
+<div class="section page">
+  <div class="content">
+    {{ content }}
+  </div>
+</div>
+
+<script>
+  var baseURL = "";
+  var xml, bb;
+  var demographics = document.getElementById('demographics');
+  var allergies = document.getElementById('allergies');
+  var carePlan = document.getElementById('careplan');
+  var encounters = document.getElementById('encounters');
+  var immunizations = document.getElementById('immunizations');
+  var results = document.getElementById('results');
+  var medications = document.getElementById('medications');
+  var problems = document.getElementById('problems');
+  var procedures = document.getElementById('procedures');
+  var socialHistory = document.getElementById('social_history');
+  var vitals = document.getElementById('vitals');
+  var payers = document.getElementById('payers');
+
+  function hl(src) {
+    return JSON.stringify(src, undefined, 2);
+    //return hljs.highlight('javascript', src).value
+  }
+
+  function load(kind) {
+    var xhReq = new XMLHttpRequest();
+
+    var url;
+    switch (kind) {
+      case 'va_c32': url = '/VA_CCD_Sample_File_Version_12_4.xml';
+        break;
+      case 'bb_ref_ccda': url = baseURL + '/files/ccda.xml';
+        break;
+    }
+
+    xhReq.open('GET', url, false);
+    xhReq.send(null);
+    var xml = xhReq.responseText;
+
+    // TODO: Replace '\t' in xml with '  '
+    xml = xml.replace(/\t/g, '  ');
+
+    clearAll();
+    document.getElementById('xml').value = xml;
+    convert();
+  }
+
+  function clearAll() {
+    clearXML();
+    clearJSON();
+  }
+
+  function clearXML() { document.getElementById('xml').value = ''; }
+  function clearJSON() {
+    var els = document.getElementsByTagName('code');
+
+    // i = 1 so it doesn't clear the sample usage example
+    for (var i = 1; i < els.length; i++) {
+      els[i].innerHTML = '';
+    }
+
+    bb = null;
+  }
+
+  function convert() {
+    clearJSON();
+    var xml = document.getElementById('xml').value;
+    var bb = require('blue-button');
+    var result = bb.parseString(xml);
+    var data = result.data;
+
+    demographics.innerHTML = hl(data.demographics);
+    allergies.innerHTML = hl(data.allergies);
+    carePlan.innerHTML = hl(data.plan_of_care);
+    encounters.innerHTML = hl(data.encounters);
+    immunizations.innerHTML = hl(data.immunizations);
+    results.innerHTML = hl(data.results);
+    medications.innerHTML = hl(data.medications);
+    problems.innerHTML = hl(data.problems);
+    procedures.innerHTML = hl(data.procedures);
+    socialHistory.innerHTML = hl(data.social_history);
+    vitals.innerHTML = hl(data.vitals);
+    payers.innerHTML = hl(data.payers);
+  }
+
+</script>
