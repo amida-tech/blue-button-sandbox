@@ -26,7 +26,6 @@ layout: main
 
   function hl(src) {
     return JSON.stringify(src, undefined, 2);
-    //return hljs.highlight('javascript', src).value
   }
 
   function load(kind) {
@@ -62,7 +61,7 @@ layout: main
     var els = document.getElementsByTagName('code');
 
     // i = 1 so it doesn't clear the sample usage example
-    for (var i = 1; i < els.length; i++) {
+    for (var i = 0; i < els.length; i++) {
       els[i].innerHTML = '';
     }
 

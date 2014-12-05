@@ -1,7 +1,7 @@
 blue-button-sandbox
 ===================
 
-Client ONly Blue-Button Parser User Interface.
+Client Only Blue-Button Parser User Interface.
 
 View at [github project page](http://amida-tech.github.io/blue-button-sandbox).
 
