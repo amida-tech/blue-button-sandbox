@@ -1,6 +1,6 @@
-name: BlueButton.js
+name: blue-button-sandbox
 markdown: redcarpet
-baseurl: /bluebutton.js
+baseurl: /blue-button-sandbox
 
 redcarpet:
   extensions: ['hard_wrap', 'autolink']
