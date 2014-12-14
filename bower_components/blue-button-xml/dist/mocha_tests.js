@@ -402,11 +402,6 @@ component.setXPath = function (value) {
     return this._xpath;
 };
 
-component.withNegationStatus = function (t) {
-    this._negationStatus = t;
-    return this;
-};
-
 component.fields = function (parsers) {
     this.parsers = [];
     parsers.forEach(function (p, i) {
@@ -510,11 +505,11 @@ component.overallParsers = function (sourceKey) {
     return result;
 };
 
-component.run = function (xmlText) {
+component.run = function (xmlText, sourceKey) {
     var instance = this.instance();
     var xmlDoc = xml.parse(xmlText);
-    instance.run(xmlDoc);
-    instance.cleanupTree();
+    instance.run(xmlDoc, sourceKey);
+    instance.cleanupTree(sourceKey);
     return instance;
 };
 
@@ -6023,7 +6018,7 @@ function base64Write (buf, string, offset, length) {
 }
 
 function utf16leWrite (buf, string, offset, length) {
-  var charsWritten = blitBuffer(utf16leToBytes(string), buf, offset, length)
+  var charsWritten = blitBuffer(utf16leToBytes(string), buf, offset, length, 2)
   return charsWritten
 }
 
@@ -6707,7 +6702,8 @@ function base64ToBytes (str) {
   return base64.toByteArray(str)
 }
 
-function blitBuffer (src, dst, offset, length) {
+function blitBuffer (src, dst, offset, length, unitSize) {
+  if (unitSize) length -= length % unitSize;
   for (var i = 0; i < length; i++) {
     if ((i + offset >= dst.length) || (i >= src.length))
       break
@@ -13092,6 +13088,77 @@ describe('processor', function () {
 var chai = require('chai');
 
 var bbxml = require('../index');
+
+var expect = chai.expect;
+
+var xmlUtil = bbxml.xmlUtil;
+var component = bbxml.component;
+var processor = bbxml.processor;
+
+describe('readme', function () {
+    var xmlfile = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<document>\n\t<root name=\"example\">\n\t\t<element ready=\"true\">82</element>\n\t\t<element ready=\"false\">16</element>\n\t</root>\n</document>\n";
+
+    it('direct', function () {
+        var doc = bbxml.xmlUtil.parse(xmlfile);
+        var nodes = bbxml.xmlUtil.xpath(doc, "//element[@ready='true']/text()");
+        var value = bbxml.processor.asString(nodes[0]);
+        expect(value).to.equal("82");
+    });
+
+    it('infrastructure', function () {
+        var element = component.define("element");
+        element.fields([
+            ["value", "1..1", "text()", processor.asFloat],
+            ["flag", "0..1", "@ready", processor.asBoolean]
+        ]);
+
+        var compA = component.define("compA");
+        compA.fields([
+            ["name", "0..1", "@name", processor.asString],
+            ["element", "1..*", "element", element]
+        ]);
+
+        var root = component.define("root");
+        root.fields([
+            ["data", "1:1", "//document/root", compA]
+        ]);
+
+        var instance = root.run(xmlfile);
+        var r = instance.toJSON();
+        var e = {
+            "data": {
+                "name": "example",
+                "element": [{
+                    "value": 82,
+                    "flag": true
+                }, {
+                    "value": 16,
+                    "flag": false
+                }]
+            }
+        };
+        expect(r).to.deep.equal(e);
+
+        element.cleanupStep(function () {
+            if (this.js && this.js.flag && this.js.value) {
+                this.js.value = this.js.value + 10
+            }
+        });
+
+        var instance2 = root.run(xmlfile);
+        var r2 = instance2.toJSON();
+        e.data.element[0].value = 92;
+        expect(r2).to.deep.equal(e);
+    });
+});
+
+},{"../index":2,"chai":10}],62:[function(require,module,exports){
+"use strict";
+
+
+var chai = require('chai');
+
+var bbxml = require('../index');
 var xml = require('../lib/xml');
 
 var expect = chai.expect;
@@ -13167,7 +13234,7 @@ describe('xpath experiments', function () {
     });
 });
 
-},{"../index":2,"../lib/xml":1,"chai":10}],62:[function(require,module,exports){
+},{"../index":2,"../lib/xml":1,"chai":10}],63:[function(require,module,exports){
 "use strict";
 
 var path = require('path');
@@ -13205,4 +13272,4 @@ describe('common', function () {
     });
 });
 
-},{"../index":2,"../lib/xml":1,"chai":10,"path":48}]},{},[54,55,56,57,58,59,60,61,62]);
+},{"../index":2,"../lib/xml":1,"chai":10,"path":48}]},{},[54,55,56,57,58,59,60,61,62,63]);

@@ -393,11 +393,6 @@ component.setXPath = function (value) {
     return this._xpath;
 };
 
-component.withNegationStatus = function (t) {
-    this._negationStatus = t;
-    return this;
-};
-
 component.fields = function (parsers) {
     this.parsers = [];
     parsers.forEach(function (p, i) {
@@ -501,11 +496,11 @@ component.overallParsers = function (sourceKey) {
     return result;
 };
 
-component.run = function (xmlText) {
+component.run = function (xmlText, sourceKey) {
     var instance = this.instance();
     var xmlDoc = xml.parse(xmlText);
-    instance.run(xmlDoc);
-    instance.cleanupTree();
+    instance.run(xmlDoc, sourceKey);
+    instance.cleanupTree(sourceKey);
     return instance;
 };
 
